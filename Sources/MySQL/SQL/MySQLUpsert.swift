@@ -15,7 +15,7 @@ public struct MySQLUpsert: SQLSerializable {
     public var values: [(Identifier, Expression)]
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         var sql: [String] = []
         sql.append("ON DUPLICATE KEY UPDATE")
         sql.append(values.map { $0.0.serialize(&binds) + " = " + $0.1.serialize(&binds) }.joined(separator: ", "))

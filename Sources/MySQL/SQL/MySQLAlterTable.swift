@@ -32,7 +32,7 @@ public struct MySQLAlterTable: SQLAlterTable {
         case after(ColumnDefinition.ColumnIdentifier)
         
         /// See `SQLSerializable`.
-        public func serialize(_ binds: inout [Encodable]) -> String {
+        public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
             switch self {
             case .first: return "FIRST"
             case .after(let after): return "AFTER " + after.identifier.serialize(&binds)
@@ -55,7 +55,7 @@ public struct MySQLAlterTable: SQLAlterTable {
     }
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         var sql: [String] = []
         sql.append("ALTER TABLE")
         sql.append(table.serialize(&binds))

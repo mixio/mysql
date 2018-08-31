@@ -29,7 +29,7 @@ public struct MySQLBind: SQLBind {
     public var value: Value
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         switch value {
         case .expression(let expr): return expr.serialize(&binds)
         case .encodable(let value):

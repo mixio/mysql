@@ -33,7 +33,7 @@ public struct MySQLInsert: SQLInsert {
     public var upsert: MySQLUpsert?
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         var sql: [String] = []
         sql.append("INSERT")
         if ignore {

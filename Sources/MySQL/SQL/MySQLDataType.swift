@@ -516,7 +516,7 @@ public struct MySQLDataType: SQLDataType, Equatable {
     }
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         func _int(_ name: String, _ m: Int?, _ unsigned: Bool = false, _ zerofill: Bool = false) -> String {
             var sql: [String] = []
             switch m {

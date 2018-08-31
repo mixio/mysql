@@ -6,7 +6,7 @@ public struct MySQLCollation: SQLCollation, CustomStringConvertible {
     }
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         return "COLLATE"
     }
 }
