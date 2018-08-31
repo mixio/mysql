@@ -1,12 +1,14 @@
 import Bits
 
 /// Represents information about a single MySQL connection.
-final class MySQLConnectionSession {
+final class MySQLPacketState {
     /// The state of this connection.
     var handshakeState: MySQLHandshakeState
 
     /// The state of queries and other functionality on this connection.
     var connectionState: MySQLConnectionState
+    
+    var eofState: MySQLEOFState
 
     /// The next available sequence ID.
     var nextSequenceID: Byte {
@@ -21,6 +23,7 @@ final class MySQLConnectionSession {
     init() {
         self.handshakeState = .waiting
         self.connectionState = .none
+        self.eofState = .none
         self.sequenceID = 0
     }
 
@@ -55,6 +58,11 @@ enum MySQLConnectionState {
     case statement(MySQLStatementProtocolState)
 }
 
+enum MySQLEOFState {
+    case none
+    case waiting
+}
+
 /// Connection states during a simple query aka Text Protocol.
 /// https://dev.mysql.com/doc/internals/en/text-protocol.html
 enum MySQLTextProtocolState {
@@ -73,10 +81,10 @@ enum MySQLStatementProtocolState {
     case waitingPrepare
     /// If num_params > 0 more packets will follow:
     case params(ok: MySQLComStmtPrepareOK, remaining: Int)
-    case paramsDone(ok: MySQLComStmtPrepareOK)
+    case paramsDone(ok: MySQLComStmtPrepareOK, lastColumn: MySQLColumnDefinition41?)
     /// If num_columns > 0 more packets will follow:
     case columns(remaining: Int)
-    case columnsDone
+    case columnsDone(lastColumn: MySQLColumnDefinition41?)
 
     case waitingExecute
     case rowColumns(columns: [MySQLColumnDefinition41], remaining: Int)

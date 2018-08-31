@@ -11,7 +11,7 @@ extension MySQLConnection {
         var rows: [[MySQLColumn: MySQLData]] = []
         return simpleQuery(string) { row in
             rows.append(row)
-        }.map(to: [[MySQLColumn: MySQLData]].self) {
+        }.map {
             return rows
         }
     }
@@ -26,9 +26,7 @@ extension MySQLConnection {
     ///     - onRow: Handles each row as it is received from the server.
     /// - returns: A future that will complete when the query is finished.
     public func simpleQuery(_ string: String, onRow: @escaping ([MySQLColumn: MySQLData]) throws -> ()) -> Future<Void> {
-        return operation {
-            return self._simpleQuery(string, onRow: onRow)
-        }
+        return _simpleQuery(string, onRow: onRow)
     }
 
 
@@ -51,7 +49,7 @@ extension MySQLConnection {
                 }
                 return false
             case .ok, .eof: return true
-            default: throw MySQLError(identifier: "simpleQuery", reason: "Unsupported message encountered during simple query: \(message).", source: .capture())
+            default: throw MySQLError(identifier: "simpleQuery", reason: "Unsupported message encountered during simple query: \(message).")
             }
         }
     }
