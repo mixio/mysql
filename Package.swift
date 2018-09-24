@@ -15,8 +15,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/crypto.git", from: "3.0.0"),
 
         // 🗄 Core services for creating database integrations.
-//      .package(url: "https://github.com/vapor/database-kit.git", from: "1.2.0"),
-        .package(url: "https://github.com/mixio/database-kit.git", .branch("mixio-dev")),
+        .package(url: "https://github.com/vapor/database-kit.git", from: "1.2.0"),
+//      .package(url: "https://github.com/mixio/database-kit.git", .branch("mixio-dev")),
 
         // 📦 Dependency injection / inversion of control framework.
         .package(url: "https://github.com/vapor/service.git", from: "1.0.0"),
