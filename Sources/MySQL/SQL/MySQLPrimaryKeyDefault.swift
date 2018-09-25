@@ -9,7 +9,7 @@ public enum MySQLPrimaryKeyDefault: SQLPrimaryKeyDefault {
     case autoIncrement
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         switch self {
         case .autoIncrement: return "AUTO_INCREMENT"
         }

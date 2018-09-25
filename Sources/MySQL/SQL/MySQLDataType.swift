@@ -4,7 +4,7 @@ public struct MySQLDataType: SQLDataType, Equatable {
     public static func == (lhs: MySQLDataType, rhs: MySQLDataType) -> Bool {
         // FIXME: more performant compare available once Swift has better equatable enum support
         var binds: [Encodable] = []
-        return lhs.serialize(&binds) == rhs.serialize(&binds)
+        return lhs.serialize(&binds, aliases: nil) == rhs.serialize(&binds, aliases: nil)
     }
     
     /// See `SQLDataType`.
@@ -516,7 +516,7 @@ public struct MySQLDataType: SQLDataType, Equatable {
     }
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         func _int(_ name: String, _ m: Int?, _ unsigned: Bool = false, _ zerofill: Bool = false) -> String {
             var sql: [String] = []
             switch m {

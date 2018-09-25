@@ -7,12 +7,12 @@ public struct MySQLDropIndex: SQLDropIndex {
     public var table: MySQLTableIdentifier
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         var sql: [String] = []
         sql.append("DROP INDEX")
-        sql.append(identifier.serialize(&binds))
+        sql.append(identifier.serialize(&binds, aliases: aliases))
         sql.append("ON")
-        sql.append(table.serialize(&binds))
+        sql.append(table.serialize(&binds, aliases: aliases))
         return sql.joined(separator: " ")
     }
 }

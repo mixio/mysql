@@ -11,7 +11,7 @@ extension MySQLConnection {
     /// - returns: A future that will complete when the query is finished.
     public func query(_ query: MySQLQuery, _ onRow: @escaping ([MySQLColumn: MySQLData]) throws -> ()) -> Future<Void> {
         var binds: [Encodable] = []
-        let string = query.serialize(&binds)
+        let string = query.serialize(&binds, aliases: nil)
         let params = binds.map { MySQLDataEncoder().encode($0) }
         logger?.record(query: string, values: params.map { $0.description })
         let comPrepare = MySQLComStmtPrepare(query: string)

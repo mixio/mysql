@@ -32,10 +32,10 @@ public struct MySQLAlterTable: SQLAlterTable {
         case after(ColumnDefinition.ColumnIdentifier)
         
         /// See `SQLSerializable`.
-        public func serialize(_ binds: inout [Encodable]) -> String {
+        public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
             switch self {
             case .first: return "FIRST"
-            case .after(let after): return "AFTER " + after.identifier.serialize(&binds)
+            case .after(let after): return "AFTER " + after.identifier.serialize(&binds, aliases: aliases)
             }
         }
     }
@@ -55,18 +55,18 @@ public struct MySQLAlterTable: SQLAlterTable {
     }
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         var sql: [String] = []
         sql.append("ALTER TABLE")
-        sql.append(table.serialize(&binds))
+        sql.append(table.serialize(&binds, aliases: aliases))
         let actions = columns.map {
-            let sql = "ADD COLUMN " + $0.serialize(&binds)
+            let sql = "ADD COLUMN " + $0.serialize(&binds, aliases: aliases)
             if let position = columnPositions[$0.column] {
-                return sql + " " + position.serialize(&binds)
+                return sql + " " + position.serialize(&binds, aliases: aliases)
             } else {
                 return sql
             }
-        } + constraints.map { "ADD " + $0.serialize(&binds) }
+        } + constraints.map { "ADD " + $0.serialize(&binds, aliases: aliases) }
         sql.append(actions.joined(separator: ", "))
         return sql.joined(separator: " ")
     }

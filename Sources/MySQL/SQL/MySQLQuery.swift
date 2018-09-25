@@ -108,17 +108,17 @@ public enum MySQLQuery: SQLQuery {
     case _raw(String, [Encodable])
     
     /// See `SQLSerializable`.
-    public func serialize(_ binds: inout [Encodable]) -> String {
+    public func serialize(_ binds: inout [Encodable], aliases: SQLTableAliases?) -> String {
         switch self {
-        case ._alterTable(let alterTable): return alterTable.serialize(&binds)
-        case ._createIndex(let createIndex): return createIndex.serialize(&binds)
-        case ._createTable(let createTable): return createTable.serialize(&binds)
-        case ._delete(let delete): return delete.serialize(&binds)
-        case ._dropIndex(let dropIndex): return dropIndex.serialize(&binds)
-        case ._dropTable(let dropTable): return dropTable.serialize(&binds)
-        case ._insert(let insert): return insert.serialize(&binds)
-        case ._select(let select): return select.serialize(&binds)
-        case ._update(let update): return update.serialize(&binds)
+        case ._alterTable(let alterTable): return alterTable.serialize(&binds, aliases: aliases)
+        case ._createIndex(let createIndex): return createIndex.serialize(&binds, aliases: aliases)
+        case ._createTable(let createTable): return createTable.serialize(&binds, aliases: aliases)
+        case ._delete(let delete): return delete.serialize(&binds, aliases: aliases)
+        case ._dropIndex(let dropIndex): return dropIndex.serialize(&binds, aliases: aliases)
+        case ._dropTable(let dropTable): return dropTable.serialize(&binds, aliases: aliases)
+        case ._insert(let insert): return insert.serialize(&binds, aliases: aliases)
+        case ._select(let select): return select.serialize(&binds, aliases: aliases)
+        case ._update(let update): return update.serialize(&binds, aliases: aliases)
         case ._raw(let sql, let values):
             binds = values
             return sql
